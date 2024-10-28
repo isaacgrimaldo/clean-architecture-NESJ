@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model  Album {
+  id        Int      @default(autoincrement()) @id
+  name      String @unique
+  description String
+  imgPortadaUrl String 
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  photos Photo[]
+}
+
+model Photo {
+  id    Int     @default(autoincrement()) @id
+  slug String
+  path String 
+  size_kb String 
+  albumId  Int
+  created_at DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  album       Album    @relation(fields: [albumId], references: [id])
+}
